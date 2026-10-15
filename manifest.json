@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Tab Renamer",
+  "name": "Nametag",
   "version": "1.0.1",
   "description": "Give pages your own persistent tab titles and restore the site's latest title at any time.",
   "permissions": ["storage"],

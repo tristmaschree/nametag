@@ -1,4 +1,4 @@
-# Tab Renamer
+# Nametag
 
 A small Chrome extension that lets you replace a page's tab title with your own
 label.
@@ -22,8 +22,8 @@ those tabs.
 1. Open `chrome://extensions` in Chrome.
 2. Turn on **Developer mode** in the upper-right corner.
 3. Click **Load unpacked**.
-4. Select this `tab-renamer` folder.
-5. Optionally pin **Tab Renamer** from Chrome's Extensions menu.
+4. Select this `nametag` folder.
+5. Optionally pin **Nametag** from Chrome's Extensions menu.
 
 Click the extension icon on any normal website, type a title, and press **Save**.
 Use **Reset to site title** to remove it.
