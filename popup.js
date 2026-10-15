@@ -19,6 +19,7 @@ function setBusy(isBusy) {
 function showStatus(message, isError = false) {
   status.textContent = message;
   status.classList.toggle("error", isError);
+  status.classList.toggle("ok", Boolean(message) && !isError);
 }
 
 function renderState(state) {
