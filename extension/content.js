@@ -3,6 +3,8 @@
 
   const STORAGE_PREFIX = "tab-title-labeler::";
   const CHECK_URL_EVERY_MS = 500;
+  // Safari exposes promise-based APIs on `browser`; Chrome on `chrome`.
+  const ext = globalThis.browser ?? globalThis.chrome;
 
   let pageKey = keyForUrl(window.location.href);
   let customTitle = null;
@@ -54,7 +56,7 @@
 
   async function loadCustomTitle(expectedKey = pageKey) {
     const generation = ++loadGeneration;
-    const saved = await chrome.storage.local.get(expectedKey);
+    const saved = await ext.storage.local.get(expectedKey);
 
     if (generation !== loadGeneration || expectedKey !== pageKey) {
       return;
@@ -74,7 +76,7 @@
     }
 
     customTitle = cleanedTitle;
-    await chrome.storage.local.set({ [pageKey]: cleanedTitle });
+    await ext.storage.local.set({ [pageKey]: cleanedTitle });
     applyCustomTitle();
     return currentState();
   }
@@ -83,7 +85,7 @@
     const keyToRemove = pageKey;
     customTitle = null;
     ++loadGeneration;
-    await chrome.storage.local.remove(keyToRemove);
+    await ext.storage.local.remove(keyToRemove);
     setDocumentTitle(latestSiteTitle);
     return currentState();
   }
@@ -143,7 +145,7 @@
     applyCustomTitle();
   });
 
-  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  ext.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (!message || message.source !== "tab-title-labeler") {
       return false;
     }
@@ -171,7 +173,7 @@
     return true;
   });
 
-  chrome.storage.onChanged.addListener((changes, areaName) => {
+  ext.storage.onChanged.addListener((changes, areaName) => {
     if (areaName !== "local" || !Object.hasOwn(changes, pageKey)) {
       return;
     }

@@ -6,7 +6,7 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 const contentScript = fs.readFileSync(
-  path.join(__dirname, "..", "content.js"),
+  path.join(__dirname, "..", "extension", "content.js"),
   "utf8"
 );
 

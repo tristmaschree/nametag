@@ -1,5 +1,8 @@
 "use strict";
 
+// Safari exposes promise-based APIs on `browser`; Chrome on `chrome`.
+const ext = globalThis.browser ?? globalThis.chrome;
+
 const form = document.querySelector("#title-form");
 const input = document.querySelector("#custom-title");
 const saveButton = document.querySelector("#save");
@@ -35,7 +38,7 @@ async function sendToPage(action, extra = {}) {
     throw new Error("No active tab found.");
   }
 
-  const response = await chrome.tabs.sendMessage(activeTabId, {
+  const response = await ext.tabs.sendMessage(activeTabId, {
     source: "tab-title-labeler",
     action,
     ...extra
@@ -52,7 +55,7 @@ async function initialize() {
   setBusy(true);
 
   try {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await ext.tabs.query({ active: true, currentWindow: true });
     activeTabId = tab?.id ?? null;
     const state = await sendToPage("get-state");
     renderState(state);
@@ -62,7 +65,7 @@ async function initialize() {
   } catch (_error) {
     setBusy(true);
     siteTitle.textContent = "Unavailable on this page";
-    showStatus("Chrome blocks extensions on this page.", true);
+    showStatus("This page can't be renamed, or Nametag doesn't have access to this site yet.", true);
   }
 }
 
